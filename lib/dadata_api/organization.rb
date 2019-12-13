@@ -9,20 +9,24 @@ module DadataApi
       @where_tin ||= DadataApi::Request.find_by_tin(tin).map do |params|
         create(params)
       end
+    rescue
+      nil
     end
 
     def self.search_by(query)
       @search_by ||= DadataApi::Request.find_by_something(query).map do |params|
         create(params)
       end
+    rescue
+      nil
     end
 
     def self.find_by_tin(tin)
-      where_tin(tin).first
+      where_tin(tin)&.first
     end
 
     def self.find_by(query)
-      search_by(query).first
+      search_by(query)&.first
     end
 
     def self.create(params)
