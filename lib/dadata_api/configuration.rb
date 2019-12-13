@@ -11,7 +11,8 @@ module DadataApi
     attr_accessor :api_base_url, :api_key
 
     def initialize
-      @api_base_url = 'https://suggestions.dadata.ru/suggestions/api/4_1'
+      @api_base_url = ENV['DADATA_API_URL'] || 'https://suggestions.dadata.ru/suggestions/api/4_1'
+      @api_key = ENV['DADATA_API_KEY']
     end
   end
 

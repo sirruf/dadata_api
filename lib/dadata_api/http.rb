@@ -2,6 +2,7 @@
 
 require 'net/http'
 require 'net/https'
+require 'json'
 
 module DadataApi
   #
@@ -29,17 +30,16 @@ module DadataApi
       response.body
     end
 
-    #private
+    private
 
     def post
       req = Net::HTTP::Post.new "#{uri.path}#{@path}"
-      req.body = form_data
+      req.body = @params.to_json
 
       req
     end
 
     def get
-      puts "GET"
       path = @params.present? ? "#{@path}?#{form_data}" : @path
       Net::HTTP::Get.new path
     end
@@ -52,7 +52,7 @@ module DadataApi
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = uri.instance_of? URI::HTTPS
       http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-      http.set_debug_output($stdout)
+      http.set_debug_output($stdout) if ENV['DADATA_DEBUG_ENABLED']
 
       http
     end
